@@ -1,8 +1,12 @@
 package cn.github.onlineRetailer.tools;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.apache.commons.lang.StringUtils;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.Jedis;
@@ -661,168 +665,183 @@ public class RedisTools {
 	 * @param value
 	 * @return
 	 */
-	// public static boolean hset(String key, String field, String value){
-	// if(StrUtils.isBlank(key) || StrUtils.isBlank(field)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// //If the field already exists, and the HSET just produced an update of
-	// the value, 0 is returned,
-	// //otherwise if a new field is created 1 is returned.
-	// Long statusCode = jedis.hset(key, field, value);
-	// jedis.close();
-	// if(statusCode > -1){
-	// return true;
-	// }
-	// return false;
-	// }
-	//
-	// /**
-	// * 批量设置Hash的属性
-	// * @param key
-	// * @param fields
-	// * @param values
-	// * @return
-	// */
-	// public static boolean hmset(String key, String[] fields, String[]
-	// values){
-	// if(StrUtils.isBlank(key) || StrUtils.isEmptyArray(fields) ||
-	// StrUtils.isEmptyArray(values)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// Map<String, String> hash = new HashMap<String, String>();
-	// for (int i=0; i<fields.length; i++) {
-	// hash.put(fields[i], values[i]);
-	// }
-	// String statusCode = jedis.hmset(key, hash);
-	// jedis.close();
-	// if(SUCCESS_OK.equalsIgnoreCase(statusCode)){
-	// return true;
-	// }
-	// return false;
-	// }
-	//
-	// /**
-	// * 批量设置Hash的属性
-	// * @param key
-	// * @param map Map<String, String>
-	// * @return
-	// */
-	// public static boolean hmset(String key, Map<String, String> map){
-	// if(StrUtils.isBlank(key) || StrUtils.isEmptyMap(map)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// String statusCode = jedis.hmset(key, map);
-	// jedis.close();
-	// if(SUCCESS_OK.equalsIgnoreCase(statusCode)){
-	// return true;
-	// }
-	// return false;
-	// }
-	//
-	// /**
-	// * 仅当field不存在时设置值，成功返回true
-	// * @param key
-	// * @param field
-	// * @param value
-	// * @return
-	// */
-	// public static boolean hsetNX(String key, String field, String value){
-	// if(StrUtils.isBlank(key) || StrUtils.isBlank(field)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// //If the field already exists, 0 is returned,
-	// //otherwise if a new field is created 1 is returned.
-	// Long statusCode = jedis.hsetnx(key, field, value);
-	// jedis.close();
-	// if(SUCCESS_STATUS_LONG == statusCode){
-	// return true;
-	// }
-	// return false;
-	// }
-	//
-	// /**
-	// * 获取属性的值
-	// * @param key
-	// * @param field
-	// * @return
-	// */
-	// public static String hget(String key, String field){
-	// if(StrUtils.isBlank(key) || StrUtils.isBlank(field)){
-	// return null;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// String value = jedis.hget(key, field);
-	// jedis.close();
-	// return value;
-	// }
-	//
-	// /**
-	// * 批量获取属性的值
-	// * @param key
-	// * @param fields String...
-	// * @return
-	// */
-	// public static List<String> hmget(String key, String... fields){
-	// if(StrUtils.isBlank(key) || StrUtils.isNull(fields)){
-	// return null;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// List<String> values = jedis.hmget(key, fields);
-	// jedis.close();
-	// return values;
-	// }
-	//
-	// /**
-	// * 获取在哈希表中指定 key 的所有字段和值
-	// * @param key
-	// * @return Map<String, String>
-	// */
-	// public static Map<String, String> hgetAll(String key){
-	// if(StrUtils.isBlank(key)){
-	// return null;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// Map<String, String> map = jedis.hgetAll(key);
-	// jedis.close();
-	// return map;
-	// }
-	//
-	// /**
-	// * 删除hash的属性
-	// * @param key
-	// * @param fields
-	// * @return
-	// */
-	// public static boolean hdel(String key, String... fields){
-	// if(StrUtils.isBlank(key) || StrUtils.isNull(fields)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// jedis.hdel(key, fields);
-	// jedis.close();
-	// //System.out.println("statusCode="+statusCode);
-	// return true;
-	// }
-	//
-	// /**
-	// * 查看哈希表 key 中，指定的字段是否存在。
-	// * @param key
-	// * @param field
-	// * @return
-	// */
-	// public static boolean hexists(String key, String field){
-	// if(StrUtils.isBlank(key) || StrUtils.isBlank(field)){
-	// return false;
-	// }
-	// Jedis jedis = jedisPool.getResource();
-	// boolean result = jedis.hexists(key, field);
-	// jedis.close();
-	// return result;
-	// }
+	public static boolean hset(String key, String field, String value) {
+		if (StringUtils.isBlank(key) || StringUtils.isBlank(field)) {
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		Long statusCode = jedis.hset(key, field, value);
+		jedis.close();
+		if (statusCode > -1) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean listIsEmpty(String[] fields) {
+		if (fields == null || fields.length == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 批量设置Hash的属性
+	 * 
+	 * @param key
+	 * @param fields
+	 * @param values
+	 * @return
+	 */
+	public static boolean hmset(String key, String[] fields, String[] values) {
+		if (StringUtils.isBlank(key) || listIsEmpty(fields)
+				|| listIsEmpty(values)) {
+
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		Map<String, String> hash = new HashMap<String, String>();
+		for (int i = 0; i < fields.length; i++) {
+			hash.put(fields[i], values[i]);
+		}
+		String statusCode = jedis.hmset(key, hash);
+		jedis.close();
+		if (SUCCESS_OK.equalsIgnoreCase(statusCode)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 批量设置Hash的属性
+	 * 
+	 * @param key
+	 * @param map
+	 *            Map<String, String>
+	 * @return
+	 */
+	public static boolean hmset(String key, Map<String, String> map) {
+		if (StringUtils.isBlank(key) || map == null || map.size() == 0) {
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		String statusCode = jedis.hmset(key, map);
+		jedis.close();
+		if (SUCCESS_OK.equalsIgnoreCase(statusCode)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 仅当field不存在时设置值，成功返回true
+	 * 
+	 * @param key
+	 * @param field
+	 * @param value
+	 * @return
+	 */
+	public static boolean hsetNX(String key, String field, String value) {
+		if (StringUtils.isBlank(key) || StringUtils.isBlank(field)) {
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		// If the field already exists, 0 is returned,
+		// otherwise if a new field is created 1 is returned.
+		Long statusCode = jedis.hsetnx(key, field, value);
+		jedis.close();
+		if (SUCCESS_STATUS_LONG == statusCode) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 获取属性的值
+	 * 
+	 * @param key
+	 * @param field
+	 * @return
+	 */
+	public static String hget(String key, String field) {
+		if (StringUtils.isBlank(key) || StringUtils.isBlank(field)) {
+			return null;
+		}
+		Jedis jedis = jedisPool.getResource();
+		String value = jedis.hget(key, field);
+		jedis.close();
+		return value;
+	}
+
+	/**
+	 * 批量获取属性的值
+	 * 
+	 * @param key
+	 * @param fields
+	 *            String...
+	 * @return
+	 */
+	public static List<String> hmget(String key, String... fields) {
+		if (StringUtils.isBlank(key) || listIsEmpty(fields)) {
+			return null;
+		}
+		Jedis jedis = jedisPool.getResource();
+		List<String> values = jedis.hmget(key, fields);
+		jedis.close();
+		return values;
+	}
+
+	/**
+	 * 获取在哈希表中指定 key 的所有字段和值
+	 * 
+	 * @param key
+	 * @return Map<String, String>
+	 */
+	public static Map<String, String> hgetAll(String key) {
+		if (StringUtils.isBlank(key)) {
+			return null;
+		}
+		Jedis jedis = jedisPool.getResource();
+		Map<String, String> map = jedis.hgetAll(key);
+		jedis.close();
+		return map;
+	}
+
+	/**
+	 * 删除hash的属性
+	 * 
+	 * @param key
+	 * @param fields
+	 * @return
+	 */
+	public static boolean hdel(String key, String... fields) {
+		if (StringUtils.isBlank(key) || listIsEmpty(fields)) {
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		jedis.hdel(key, fields);
+		jedis.close();
+		// System.out.println("statusCode="+statusCode);
+		return true;
+	}
+
+	/**
+	 * 查看哈希表 key 中，指定的字段是否存在。
+	 * 
+	 * @param key
+	 * @param field
+	 * @return
+	 */
+	public static boolean hexists(String key, String field) {
+		if (StringUtils.isBlank(key) || StringUtils.isBlank(field)) {
+			return false;
+		}
+		Jedis jedis = jedisPool.getResource();
+		boolean result = jedis.hexists(key, field);
+		jedis.close();
+		return result;
+	}
 
 	/**
 	 * 为哈希表 key 中的指定字段的整数值加上增量 increment 。
