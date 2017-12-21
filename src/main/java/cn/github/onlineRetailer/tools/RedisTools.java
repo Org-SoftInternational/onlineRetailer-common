@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 import redis.clients.jedis.Jedis;
@@ -18,8 +19,12 @@ public class RedisTools {
 	private static String redisIP = Config.getRedisIP();
 
 	private static int redisPort = Config.getRedisPort();
+	
+	private static int timeout = Config.getTimeout();
+	
+	private static String password = Config.getPassword();
 
-	private final static JedisPool jedisPool = new JedisPool(redisIP, redisPort);
+	private final static JedisPool jedisPool = new JedisPool(new GenericObjectPoolConfig(),redisIP, redisPort,timeout,password);
 
 	private static final String SUCCESS_OK = "OK";
 	/**
