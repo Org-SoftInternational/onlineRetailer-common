@@ -5,7 +5,9 @@ import java.io.Serializable;
 
 public class DummySuccess implements Serializable {
 	
-	private Boolean result = true;
+	private static final long serialVersionUID = 2615611761212090985L;
+
+    private Boolean result = true;
 
 	private String returnCode;
 	/**
