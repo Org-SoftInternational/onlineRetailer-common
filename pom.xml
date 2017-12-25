@@ -4,15 +4,39 @@
 	<groupId>cn.github.onlineRetailer</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<artifactId>onlineRetailer-common</artifactId>
-    <name>通用工具类工程</name>
-
+	<name>通用工具类工程</name>
+	<properties>
+		<spring.version>4.1.7.RELEASE</spring.version>
+		<redis.version>2.9.0</redis.version>
+		<common.version>2.6</common.version>
+	</properties>
 	<dependencies>
-	
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${common.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>${redis.version}</version>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
-			
+
 		</plugins>
 	</build>
 
